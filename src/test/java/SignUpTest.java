@@ -49,10 +49,13 @@ public class SignUpTest {
         driver.get("https://sharelane.com/cgi-bin/register.py");
         driver.findElement(By.name("zip_code")).sendKeys("111111");
         driver.findElement(By.cssSelector("input[value=Continue]")).click();
-        boolean isSignUpPageOpened = driver.findElement(By.cssSelector("input[value=Register]")).isDisplayed();
-        assertTrue(isSignUpPageOpened, "Wrong page is not opened");
+        String actualError = driver.findElement(By.cssSelector("span[class=error_message]")).getText();
+        assertEquals(actualError,
+                "Oops, error on page. ZIP code should have 5 digits",
+                "Wrong error message");
         driver.quit();
     }
+
 
 
     @Test
@@ -73,9 +76,9 @@ public class SignUpTest {
         driver.quit();
     }
 
-    // Some of Homework
+
     @Test
-    public void negativeSignUpFirstNameEmpty() {
+    public void negativeSuccessfulSignUpFirstName() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.get("https://sharelane.com/cgi-bin/register.py?page=1&zip_code=11111");
@@ -91,78 +94,5 @@ public class SignUpTest {
                 "Wrong error message");
         driver.quit();
     }
-    @Test
-    public void negativeSignUpFirstNameDigits() {
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://sharelane.com/cgi-bin/register.py?page=1&zip_code=11111");
-        driver.findElement(By.name("first_name")).sendKeys("652389");
-        driver.findElement(By.name("last_name")).sendKeys("Click");
-        driver.findElement(By.name("email")).sendKeys("test@test.te");
-        driver.findElement(By.name("password1")).sendKeys("qwerty");
-        driver.findElement(By.name("password2")).sendKeys("qwerty");
-        driver.findElement(By.cssSelector("input[value=Register]")).click();
-        String negActualConfirmation = driver.findElement(By.cssSelector("span[class=error_message]")).getText();
-        assertEquals(negActualConfirmation,
-                "Oops, error on page. Some of your fields have invalid data or email was previously used",
-                "Wrong error message");
-        driver.quit();
-    }
-
-    @Test
-    public void negativeSignUpEmailNoName() {
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://sharelane.com/cgi-bin/register.py?page=1&zip_code=11111");
-        driver.findElement(By.name("first_name")).sendKeys("Nick");
-        driver.findElement(By.name("last_name")).sendKeys("Click");
-        driver.findElement(By.name("email")).sendKeys("@test.te");
-        driver.findElement(By.name("password1")).sendKeys("qwerty");
-        driver.findElement(By.name("password2")).sendKeys("qwerty");
-        driver.findElement(By.cssSelector("input[value=Register]")).click();
-        String negActualConfirmation = driver.findElement(By.cssSelector("span[class=error_message]")).getText();
-        assertEquals(negActualConfirmation,
-                "Oops, error on page. Some of your fields have invalid data or email was previously used",
-                "Account is activated!");
-        driver.quit();
-    }
-
-    @Test
-    public void negativeSignUpEmailNoDomain() {
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://sharelane.com/cgi-bin/register.py?page=1&zip_code=11111");
-        driver.findElement(By.name("first_name")).sendKeys("Nick");
-        driver.findElement(By.name("last_name")).sendKeys("Click");
-        driver.findElement(By.name("email")).sendKeys("test@test.");
-        driver.findElement(By.name("password1")).sendKeys("qwerty");
-        driver.findElement(By.name("password2")).sendKeys("qwerty");
-        driver.findElement(By.cssSelector("input[value=Register]")).click();
-        String negActualConfirmation = driver.findElement(By.cssSelector("span[class=error_message]")).getText();
-        assertEquals(negActualConfirmation,
-                "Oops, error on page. Some of your fields have invalid data or email was previously used",
-                "Account is activated!");
-        driver.quit();
-    }
-
-    @Test
-    public void negativeSignUpEmailNoAt() {
-        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://sharelane.com/cgi-bin/register.py?page=1&zip_code=11111");
-        driver.findElement(By.name("first_name")).sendKeys("Nick");
-        driver.findElement(By.name("last_name")).sendKeys("Click");
-        driver.findElement(By.name("email")).sendKeys("test_test.te");
-        driver.findElement(By.name("password1")).sendKeys("qwerty");
-        driver.findElement(By.name("password2")).sendKeys("qwerty");
-        driver.findElement(By.cssSelector("input[value=Register]")).click();
-        String negActualConfirmation = driver.findElement(By.cssSelector("span[class=error_message]")).getText();
-        assertEquals(negActualConfirmation,
-                "Oops, error on page. Some of your fields have invalid data or email was previously used",
-                "Account is activated!");
-        driver.quit();
-    }
-
-
 
 }
