@@ -49,8 +49,10 @@ public class SignUpTest {
         driver.get("https://sharelane.com/cgi-bin/register.py");
         driver.findElement(By.name("zip_code")).sendKeys("111111");
         driver.findElement(By.cssSelector("input[value=Continue]")).click();
-        boolean isSignUpPageOpened = driver.findElement(By.cssSelector("input[value=Register]")).isDisplayed();
-        assertFalse(isSignUpPageOpened, "Wrong page is not opened");
+        String actualError = driver.findElement(By.cssSelector("span[class=error_message]")).getText();
+        assertEquals(actualError,
+                "Oops, error on page. ZIP code should have 5 digits",
+                "Wrong error message");
         driver.quit();
     }
 
